@@ -8,8 +8,6 @@ from os import listdir
 from os.path import isfile, join
 import numpy
 
-
-
 ap = argparse.ArgumentParser()
 ap.add_argument("-i", "--image", required=False, help="Path to the image")
 ap.add_argument("-d", "--folder", required=False, help="Path to the folder")
