@@ -42,13 +42,13 @@ def keypress(event):
 def edgeDetect(imgnum, minThresh, maxThresh): # min and max thresholds on gradient steepness
 	global numimages
 	
-	img = cv2.imread('windows/Online/'+str(imgnum)+'.jpg',0)
+	img = cv2.imread('Online/'+str(imgnum)+'.jpg',0)
 	# If you want you can change this directory to sample_images (the ones taken
 	# at the beach), but the images in there are so large that edge detection
 	# becomes less useful (try it out and see).
 	# My gut feeling is that the more compressed the image, the more useful edges are.
 
-	edges = cv2.Canny(img,minThresh,maxThresh)
+	edges = cv2.Canny(img,minThresh,maxThresh) # run the actual edge detection
 
 	plt.subplot(121),plt.imshow(img,cmap = 'gray')
 	plt.title('Original Image ('+str(imgnum)+' of '+str(numimages)+')'), plt.xticks([]), plt.yticks([])
