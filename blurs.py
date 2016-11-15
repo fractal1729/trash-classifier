@@ -3,13 +3,16 @@ import numpy
 import argparse
 from os import listdir
 from os.path import isfile, join
+from matplotlib import pyplot as plt
+
 
 ap = argparse.ArgumentParser()
 ap.add_argument("-i", "--image", required=False, help="Path to the image")
 ap.add_argument("-d", "--folder", required=False, help="Path to the folder")
 args = vars(ap.parse_args())
 
-def blurImg(img, blurType):
+
+def blurImg(img):
     # kernel = numpy.ones((5,5),numpy.float32)/25          #kernal filter blur pt1
     # blur = cv2.filter2D(img,-1,kernel)                    #Kernal filter blur pt2
     # blur = cv2.blur(img,(5,5))                           #normal blur
@@ -39,18 +42,15 @@ if __name__ == "__main__":
         blur = blurImg(img)
 
         vis = numpy.concatenate((img, blur), axis=1)
-        cv2.imshow("Orig and Blur", vis)
-        cv2.waitKey()
+        # cv2.imshow("Orig and Blur", vis)
+        # cv2.waitKey()
 
         # clone = img.copy()
         # cv2.rectangle(clone, (x, y), (x + winW, y + winH), (0, 255, 0), 2)
         # cv2.imshow("Window", clone)
 
-
-
-
-        # plt.subplot(121),plt.imshow(img),plt.title('Original')
-        # plt.xticks([]), plt.yticks([])
-        # plt.subplot(122),plt.imshow(blur),plt.title('Averaging')
-        # plt.xticks([]), plt.yticks([])
-        # plt.show()
+        plt.subplot(121),plt.imshow(img),plt.title('Original')
+        plt.xticks([]), plt.yticks([])
+        plt.subplot(122),plt.imshow(blur),plt.title('Averaging')
+        plt.xticks([]), plt.yticks([])
+        plt.show()

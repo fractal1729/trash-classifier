@@ -6,9 +6,11 @@ from matplotlib import pyplot as plt
 
 numimages = 22 # max image number
 imgnum = 1 # keeps track of which image we're on
-minThresh = 100 #
+minThresh = 10 #
+
 maxThresh = 200 #
-minArea = 1500
+minArea = 0
+
 
 def keypress(event):
 	if event.key == 'escape': # exit
@@ -50,8 +52,8 @@ def blobDetect(imgnum, minThresh, maxThresh, minArea): # min and max thresholds 
 	params.filterByArea = True
 	params.minArea = minArea
 
-	img = cv2.imread('sample_images/'+str(imgnum)+'.jpg',cv2.IMREAD_GRAYSCALE)
-
+	img = cv2.imread('Online/'+str(imgnum)+'.jpg',cv2.IMREAD_GRAYSCALE)
+	# img = cv2.medianBlur(img,5)
 	detector = cv2.SimpleBlobDetector(params)
 
 	# Detect blobs.
