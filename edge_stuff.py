@@ -41,8 +41,9 @@ def keypress(event):
 
 def edgeDetect(imgnum, minThresh, maxThresh): # min and max thresholds on gradient steepness
 	global numimages
-	
-	img = cv2.imread('Online/'+str(imgnum)+'.jpg',0)
+
+	img_gray = cv2.imread('Online/'+str(imgnum)+'.jpg',cv2.IMREAD_GRAYSCALE)
+	img = cv2.applyColorMap(img_gray, cv2.COLORMAP_JET)
 	# If you want you can change this directory to sample_images (the ones taken
 	# at the beach), but the images in there are so large that edge detection
 	# becomes less useful (try it out and see).
