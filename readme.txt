@@ -13,3 +13,9 @@ to run edge_stuff.py:
 	1/2 - decrement/increment minThresh by 50
 	o/p - decrement/increment maxthresh by 10
 	9/0 - decrement/increment maxThresh by 50
+
+
+to run blurs.py:
+1. set venv
+2. run “python blurs.py”
+3. hotkeys: same as sliding windows

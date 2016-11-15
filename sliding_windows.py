@@ -8,6 +8,8 @@ from os import listdir
 from os.path import isfile, join
 import numpy
 
+
+
 ap = argparse.ArgumentParser()
 ap.add_argument("-i", "--image", required=False, help="Path to the image")
 ap.add_argument("-d", "--folder", required=False, help="Path to the folder")
@@ -17,9 +19,17 @@ args = vars(ap.parse_args())
 
 mypath=args["folder"]
 onlyfiles = [ f for f in listdir(mypath) if isfile(join(mypath,f)) ]
-images = numpy.empty(len(onlyfiles), dtype=object)
-for n in range(0, len(onlyfiles)):
-  images[n] = cv2.imread( join(mypath,onlyfiles[n]) )
+
+if len(onlyfiles) > 0:
+    images = numpy.empty(len(onlyfiles), dtype=object)
+    for n in range(0, len(onlyfiles)):
+      images[n] = cv2.imread( join(mypath,onlyfiles[n]) )
+elif (cv2.imread(args["image"]) != None):
+    images = numpy.empty(1, dtype=object)
+    images[1] = cv2.imread(args["image"])
+else:
+    raise ValueError('Invalid arguments; image or directory path reference needed')
+
 
 for image in images:
     win_size = 16;
