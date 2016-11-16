@@ -28,17 +28,17 @@ def pyramid(image, scale=1.5, minSize=(30,30)):
 
 
 def sliding_window(image, stepSize, windowSize):
-    """
-    Generate slices of image using windows that slide and resize
+        """
+        Generate slices of image using windows that slide and resize
 
-    :param image: Source Image
-    :param stepSize: How many pixels to skip per slide
-    :param windowSize: Size of image window
-    """
+        :param image: Source Image
+        :param stepSize: How many pixels to skip per slide
+        :param windowSize: Size of image window
+        """
 
-    for row in xrange(0, image.shape[0], stepSize):
-        for col in xrange(0, image.shape[1], stepSize):
-            yield (col, row, image[row:row + windowSize[1],col:col + windowSize[0]])
+        for row in xrange(0, image.shape[0], stepSize):
+            for col in xrange(0, image.shape[1], stepSize):
+                yield (col, row, image[row:row + windowSize[1],col:col + windowSize[0]])
 
 def compressJPG(img, factor): # if you know of a better way to do this than make a temp file, please implement that
     """
