@@ -10,13 +10,27 @@ import random
 def getCoords(row):
     index = 1
     coords = []
-    while  not math.isnan(row[index]) :
+    while (index < len(row)) and (not math.isnan(row[index])) :
         coords.append([row[index],row[index+1],row[index+2],row[index+3]])
         index = index + 4
     return coords
 
+def generateNegativeTestCases(img, coords, size):
+    negCoords = [];
+    width = len(img[0])
+    height = len(img)
+    for x in range(0, width - size):
+        for y in range(0, height - size):
+            for coord in coords:
+                if (x < (coord[0] + coords[4])) && ((x + width) > coord[0]) && (y < (coord[1] + coord[3])) && ((y + height) > coord[1]):
+                    continue
+                else:
+                    negCoords.append(coord)
+    return negCoords                
+
+
 #coords = An array of 4-element arrays of x, y, h, w
-def generatePositiveTestCases( coords, count):
+def generatePositiveTestCases(coords, count):
     finalcoords = [];
     for coord in coords:
         top = coord[0]
