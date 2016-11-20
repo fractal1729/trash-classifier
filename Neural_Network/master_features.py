@@ -8,7 +8,6 @@ COLOR_THRESH = 150
 EDGE_MIN_THRESH = 100
 EDGE_MAX_THRESH = 200
 
-
 def feature_images(img):
     color = cv2.cvtColor(colorDetect(img, COLOR_THRESH), cv2.COLOR_BGR2GRAY)
     edge = cv2.Canny(cv2.cvtColor(img, cv2.COLOR_BGR2GRAY), EDGE_MIN_THRESH, EDGE_MAX_THRESH)
@@ -28,14 +27,14 @@ def main(img, coords):
 
 def features(img):
     color = cv2.cvtColor(colorDetect(img, COLOR_THRESH), cv2.COLOR_BGR2GRAY).flatten()
-    edge = cv2.cvtColor(cv2.Canny(img,EDGE_MIN_THRESH,EDGE_MAX_THRESH), cv2.COLOR_BGR2GRAY).flatten()
-    grayscale = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY).flatten()
+    edge = cv2.Canny(cv2.cvtColor(img, cv2.COLOR_BGR2GRAY), EDGE_MIN_THRESH, EDGE_MAX_THRESH).flatten()
+    grayscale = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY).flatten()
 
     return np.append(color, edge, grayscale)
 
-def crop(img, coords):
-    crop_img = img[coords[1]:coords[2], coords[0]:coords[2]]
-    return crop_img
+# def crop(img, coords):
+    # crop_img = img[coords[0]:coords[0]+coords[2], coords[1]:coords[1]+coords[2]]
+    # return crop_img
 
 def colorDetect(img, thresh):
 	height, width, channels = img.shape
