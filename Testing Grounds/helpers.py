@@ -45,9 +45,6 @@ def compressJPG(img, factor): # if you know of a better way to do this than make
     Compress a JPG image
 
     :param img: Source Image
-    :param factor: Compression factor; ranges from 100 (no compression) to 1 (full compression)
+    :param factor: Compression factor; ranges from 0 to 1 if you're trying to make the image smaller
     """
-
-    cv2.imwrite('temp.jpg', img, [int(cv2.IMWRITE_JPEG_QUALITY), factor])
-    img = cv2.imread('temp.jpg')
-    return img
+    return cv2.resize(img, 0, factor, factor, cv2.INTER_NEAREST);
