@@ -32,8 +32,7 @@ def keypress(event):
 	plot(imgnum, thresh) # reload image
 
 def detect(img, thresh):
-	height = np.size(img, 0)
-	width = np.size(img, 1)
+	height, width, channels = img.shape
 	sand = [(194, 178, 128)]
 	new_image = np.zeros((height,width,3), np.uint8)
 	
