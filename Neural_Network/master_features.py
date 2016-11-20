@@ -35,7 +35,6 @@ def features(img):
     # crop_img = img[coords[0]:coords[0]+coords[2], coords[1]:coords[1]+coords[2]]
     # return crop_img
 
->>>>>>> origin/master
 def colorDetect(img, thresh):
 	height, width, channels = img.shape
 	sand = [194, 178, 128]
