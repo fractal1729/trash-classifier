@@ -4,7 +4,7 @@ import cv2
 import numpy as np
 from matplotlib import pyplot as plt
 
-FOLDER_NAME = './../Online Images/'
+FOLDER_NAME = './../Online_Images/'
 NUM_IMAGES = 22 # max image number
 
 imgnum = 1 # keeps track of which image we're on

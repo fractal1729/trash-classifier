@@ -28,7 +28,7 @@ plt.show()
 # checked = [False]*256
 # sumsquares = 0
 
-# bincount = 0 # count per bin
+# bincount = 0 # count per binn
 # currbin = 0 # current bin; bin number of intensity i is floor(i/binwidth)
 
 # for index in range(len(sandpix)):
