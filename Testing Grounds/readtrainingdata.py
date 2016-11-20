@@ -22,11 +22,11 @@ def generateNegativeTestCases(img, coords, size):
     for x in range(0, width - size):
         for y in range(0, height - size):
             for coord in coords:
-                if (x < (coord[0] + coords[4])) && ((x + width) > coord[0]) && (y < (coord[1] + coord[3])) && ((y + height) > coord[1]):
+                if (x < (coord[0] + coords[4])) and ((x + size) > coord[0]) and (y < (coord[1] + coord[3])) and ((y + size) > coord[1]):
                     continue
                 else:
                     negCoords.append(coord)
-    return negCoords                
+    return negCoords
 
 
 #coords = An array of 4-element arrays of x, y, h, w
