@@ -2,14 +2,14 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 import sys
-from Neural_Network.master_features import features
+from Neural_Network.master_features import feature_images
 
 NUM_IMAGES = 22 # max image number
 FOLDER_NAME = './Online_Images/'
 MAX_WINDOW_SIZE = 200
 MIN_WINDOW_SIZE = 20
 
-imgnum = 1 # keeps track of which image we're on
+imgnum = 15 # keeps track of which image we're on; 15 is set as default
 img = cv2.imread(FOLDER_NAME+str(imgnum)+'.jpg')
 imgH,imgW,channels = img.shape
 
@@ -33,14 +33,14 @@ def onclick(event):
 
 def plot_window(window):
 	fig2 = plt.figure()
-	color, edge, grayscale = features(window)
-	plt.subplot(121),plt.imshow(window)
+	color, edge, grayscale = feature_images(window)
+	plt.subplot(221),plt.imshow(window)
 	plt.title('Window'), plt.xticks([]), plt.yticks([])
-	plt.subplot(122),plt.imshow(grayscale)
+	plt.subplot(222),plt.imshow(grayscale,cmap='gray')
 	plt.title('Grayscale'), plt.xticks([]), plt.yticks([])
-	plt.subplot(221),plt.imshow(edge)
+	plt.subplot(223),plt.imshow(edge)
 	plt.title('Edges'), plt.xticks([]), plt.yticks([])
-	plt.subplot(222),plt.imshow(color)
+	plt.subplot(224),plt.imshow(color)
 	plt.title('Colors'), plt.xticks([]), plt.yticks([])
 
 def keypress(event):

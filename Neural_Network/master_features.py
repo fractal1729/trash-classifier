@@ -2,18 +2,18 @@ import sys
 import cv2
 import numpy as np
 from matplotlib import pyplot as plt
+import math
 
 COLOR_THRESH = 150
 EDGE_MIN_THRESH = 100
 EDGE_MAX_THRESH = 200
 
-image = cv2.imread('3.jpg',cv2.IMREAD_COLOR)
-feature_images(image)
 
 def feature_images(img):
     color = cv2.cvtColor(colorDetect(img, COLOR_THRESH), cv2.COLOR_BGR2GRAY)
-    edge = cv2.cvtColor(cv2.Canny(img,EDGE_MIN_THRESH,EDGE_MAX_THRESH), cv2.COLOR_BGR2GRAY)
-    grayscale = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    edge = cv2.Canny(cv2.cvtColor(img, cv2.COLOR_BGR2GRAY), EDGE_MIN_THRESH, EDGE_MAX_THRESH)
+    #edge = cv2.cvtColor(cv2.Canny(img,EDGE_MIN_THRESH,EDGE_MAX_THRESH), cv2.COLOR_BGR2GRAY)
+    grayscale = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
     return [color, edge, grayscale]
 
@@ -31,9 +31,6 @@ def features(img):
     edge = cv2.cvtColor(cv2.Canny(img,EDGE_MIN_THRESH,EDGE_MAX_THRESH), cv2.COLOR_BGR2GRAY).flatten()
     grayscale = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY).flatten()
 
-<<<<<<< HEAD
-    return [color, edge, grayscale]
-=======
     return np.append(color, edge, grayscale)
 
 def crop(img, coords):
@@ -55,4 +52,7 @@ def colorDetect(img, thresh):
 				new_image[i][j] = [255,255,255]
 
 	return new_image
->>>>>>> origin/master
+
+
+# image = cv2.imread('./../Sample_Images/3.jpg')
+# feature_images(image)
