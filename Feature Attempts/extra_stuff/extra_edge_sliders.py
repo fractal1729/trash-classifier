@@ -4,7 +4,7 @@ import argparse
 from Tkinter import *
 
 import cv2
-from opencv import imutils
+import imutils
 
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
@@ -114,18 +114,3 @@ scale3 = Scale( root, variable = var3 , command=updateBlur, orient=HORIZONTAL,fr
 scale3.pack(side=BOTTOM)
 
 root.mainloop()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
