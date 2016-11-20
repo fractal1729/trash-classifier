@@ -12,7 +12,4 @@ def features(img):
     edge = cv2.cvtColor(cv2.Canny(img,EDGE_MIN_THRESH,EDGE_MAX_THRESH), cv2.COLOR_BGR2GRAY).flatten()
     grayscale = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY).flatten()
 
-    return np.append(color, edge, grayscale)
-
-def crop(img, coords)
-    
+    return [color, edge, grayscale]

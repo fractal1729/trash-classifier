@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 import sys
+from Neural_Network.master_features import features
 
 NUM_IMAGES = 22 # max image number
 FOLDER_NAME = './Online_Images/'
@@ -31,12 +32,16 @@ def onclick(event):
     	plt.show()
 
 def plot_window(window):
-
-	##### PLOT FEATURES HERE #####
-
 	fig2 = plt.figure()
-	plt.imshow(window)
+	color, edge, grayscale = features(window)
+	plt.subplot(121),plt.imshow(window)
 	plt.title('Window'), plt.xticks([]), plt.yticks([])
+	plt.subplot(122),plt.imshow(grayscale)
+	plt.title('Grayscale'), plt.xticks([]), plt.yticks([])
+	plt.subplot(221),plt.imshow(edge)
+	plt.title('Edges'), plt.xticks([]), plt.yticks([])
+	plt.subplot(222),plt.imshow(color)
+	plt.title('Colors'), plt.xticks([]), plt.yticks([])
 
 def keypress(event):
 	if event.key == 'escape': # exit

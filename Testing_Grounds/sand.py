@@ -4,39 +4,39 @@ import matplotlib.pyplot as plt
 from helpers import sliding_window
 import scipy.stats as stats
 
-# get average color of sand
-sandimg = cv2.imread('./sample_images/1.jpg',0)
+sandimg = cv2.imread('./../Sample_Images/sand.jpg',0)
 
 sandpix = np.array(sorted(np.matrix(sandimg).getA1())) # unrolls the matrix into an array, and sorts it
 
-dist = getattr(stats, 'gamma')
-print('hi')
-param = dist.fit(sandpix)
-print('hi2')
-fit = dist.pdf(*param[:-2], loc=param[-2], scale=param[-1], normed=True)
-print('hi3')
+# dist = getattr(stats, 'gamma')
+# print('hi')
+# param = dist.fit(sandpix)
+# print('hi2')
+# fit = dist.pdf(*param[:-2], loc=param[-2], scale=param[-1], normed=True)
+# print('hi3')
 
-# fit = stats.beta.pdf(sandpix, np.mean(sandpix), np.std(sandpix))
+fit = stats.norm.pdf(sandpix, np.mean(sandpix), np.std(sandpix))
 
-plt.plot(fit)
+plt.plot(sandpix, fit, '-o')
 
 binwidth = 3
 hist = plt.hist(sandpix, normed=True, bins=range(min(sandpix), max(sandpix) + binwidth, binwidth))
 
 plt.show()
 
-# checked = [False]*256
-# sumsquares = 0
+# # checked = [False]*256
+sumsquares = 0
 
-# bincount = 0 # count per binn
-# currbin = 0 # current bin; bin number of intensity i is floor(i/binwidth)
+bincount = 0 # count per bin
+currbin = 0 # current bin; bin number of intensity i is floor(i/binwidth)
 
-# for index in range(len(sandpix)):
-# 	i = sandpix[index]
-# 	if i/binwidth == currbin:
-# 		bincount++
-# 	else:
-# 		error = 
+for index in range(len(sandpix)):
+	i = sandpix[index]
+	if i/binwidth == currbin:
+		bincount++
+	else:
+		fit[index]
+		error = 
 
 # img = cv2.imread('./sample_images/1.jpg',0)
 
