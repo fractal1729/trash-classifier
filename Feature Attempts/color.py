@@ -33,7 +33,7 @@ def keypress(event):
 
 def detect(img, thresh):
 	height, width, channels = img.shape
-	sand = [(194, 178, 128)]
+	sand = [194, 178, 128]
 	new_image = np.zeros((height,width,3), np.uint8)
 	
 	for i in range(height):
