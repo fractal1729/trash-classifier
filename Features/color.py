@@ -36,13 +36,15 @@ def keypress(event):
 def detect(img, thresh):
 	height, width, channels = img.shape
 	sand = [194, 178, 128]
+	# seaweed = [55, 65, 42]
 	new_image = np.zeros((height,width,channels), np.uint8)
 
 	for i in range(height):
 		for j in range(width):
 			px = img[i][j]
-			dist = math.sqrt(math.pow((px[0] - sand[0]),2) + math.pow((px[1] - sand[1]),2) + math.pow((px[2] - sand[2]),2))
-			if dist > thresh:
+			dist_sand = math.sqrt(math.pow((px[0] - sand[0]),2) + math.pow((px[1] - sand[1]),2) + math.pow((px[2] - sand[2]),2))
+			# dist_seaweed = math.sqrt(math.pow((px[0] - seaweed[0]),2) + math.pow((px[1] - seaweed[1]),2) + math.pow((px[2] - seaweed[2]),2))
+			if dist_sand > thresh:
 				new_image[i][j] = [255,255,255]
 
 	return new_image
