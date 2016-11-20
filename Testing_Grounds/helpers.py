@@ -40,11 +40,13 @@ def sliding_window(image, stepSize, windowSize):
             for col in xrange(0, image.shape[1], stepSize):
                 yield (col, row, image[row:row + windowSize[1],col:col + windowSize[0]])
 
-def compressJPG(img, factor): # if you know of a better way to do this than make a temp file, please implement that
+def compressJPG(img, factor):
     """
     Compress a JPG image
 
     :param img: Source Image
     :param factor: Compression factor; ranges from 0 to 1 if you're trying to make the image smaller
     """
-    return cv2.resize(img, 0, factor, factor, cv2.INTER_NEAREST);
+    resizedImg = np.array([])
+    resizedImg = cv2.resize(img, (0,0), resizedImg, factor, factor, cv2.INTER_NEAREST)
+    return resizedImg

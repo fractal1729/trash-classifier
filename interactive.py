@@ -3,14 +3,16 @@ import numpy as np
 import matplotlib.pyplot as plt
 import sys
 from Neural_Network.master_features import feature_images
+from Testing_Grounds.helpers import compressJPG
 
 NUM_IMAGES = 22 # max image number
-FOLDER_NAME = './Online_Images/'
+FOLDER_NAME = './Sample_Images/'
+RESIZE_FACTOR = 0.5
 MAX_WINDOW_SIZE = 200
 MIN_WINDOW_SIZE = 20
 
 imgnum = 15 # keeps track of which image we're on; 15 is set as default
-img = cv2.imread(FOLDER_NAME+str(imgnum)+'.jpg')
+img = compressJPG(cv2.imread(FOLDER_NAME+str(imgnum)+'.jpg'), RESIZE_FACTOR)
 imgH,imgW,channels = img.shape
 
 win_size = 50 # default size of sliding windows
@@ -61,7 +63,7 @@ def keypress(event):
 	if event.key == 'c': # decrement window size
 		win_size = max(win_size-10,MIN_WINDOW_SIZE)
 
-	img = cv2.imread(FOLDER_NAME+str(imgnum)+'.jpg')
+	img = compressJPG(cv2.imread(FOLDER_NAME+str(imgnum)+'.jpg'), RESIZE_FACTOR)
 	imgH,imgW,channels = img.shape
 	img_with_windows = draw_windows(win_size, win_size, img)
 	plt.imshow(img_with_windows)
