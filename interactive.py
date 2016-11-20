@@ -2,10 +2,9 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 import sys
-from helpers import sliding_window
 
 NUM_IMAGES = 22 # max image number
-FOLDER_NAME = './Online/'
+FOLDER_NAME = './Online_Images/'
 MAX_WINDOW_SIZE = 200
 MIN_WINDOW_SIZE = 20
 
