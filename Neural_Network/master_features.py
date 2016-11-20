@@ -11,31 +11,19 @@ EDGE_MAX_THRESH = 200
 
 def feature_images(img):
     color = cv2.cvtColor(colorDetect(img, COLOR_THRESH), cv2.COLOR_BGR2GRAY)
-    edge = cv2.Canny(cv2.cvtColor(img, cv2.COLOR_BGR2GRAY), EDGE_MIN_THRESH, EDGE_MAX_THRESH)
+    edge = cv2.Canny(img, EDGE_MIN_THRESH, EDGE_MAX_THRESH)
     #edge = cv2.cvtColor(cv2.Canny(img,EDGE_MIN_THRESH,EDGE_MAX_THRESH), cv2.COLOR_BGR2GRAY)
     grayscale = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
     return [color, edge, grayscale]
 
-def main(img, coords):
-    window_features = np.empty(len(coords))
+def feature_list(img, coords):
+    window_features = [[]]*len(coords)
 
     for i in range(len(coords)):
-        crop_img = crop(img, coords[i])
-        window_features[i] = features(crop_img)
+        window_features[i] = feature_images(img[coords[i][0]:coords[i][0]+coords[i][2], coords[i][1]:coords[i][1]+coords[i][2]])
 
     return window_features
-
-def features(img):
-    color = cv2.cvtColor(colorDetect(img, COLOR_THRESH), cv2.COLOR_BGR2GRAY).flatten()
-    edge = cv2.cvtColor(cv2.Canny(img,EDGE_MIN_THRESH,EDGE_MAX_THRESH), cv2.COLOR_BGR2GRAY).flatten()
-    grayscale = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY).flatten()
-
-    return np.append(color, edge, grayscale)
-
-def crop(img, coords):
-    crop_img = img[coords[1]:coords[2], coords[0]:coords[2]]
-    return crop_img
 
 def colorDetect(img, thresh):
 	height, width, channels = img.shape
@@ -52,7 +40,3 @@ def colorDetect(img, thresh):
 				new_image[i][j] = [255,255,255]
 
 	return new_image
-
-
-# image = cv2.imread('./../Sample_Images/3.jpg')
-# feature_images(image)
