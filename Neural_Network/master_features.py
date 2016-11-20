@@ -24,8 +24,6 @@ def feature_list(img, coords):
 
     return window_features
 
-<<<<<<< HEAD
-=======
 def features(img):
     color = cv2.cvtColor(colorDetect(img, COLOR_THRESH), cv2.COLOR_BGR2GRAY).flatten()
     edge = cv2.Canny(cv2.cvtColor(img, cv2.COLOR_BGR2GRAY), EDGE_MIN_THRESH, EDGE_MAX_THRESH).flatten()
@@ -52,12 +50,8 @@ def colorDetect(img, thresh):
 			if dist_sand > thresh:
 				new_image[i][j] = [255,255,255]
 
-<<<<<<< HEAD
-	return new_image
-=======
 	return new_image
 
 
 # image = cv2.imread('./../Sample_Images/3.jpg')
 # feature_images(image)
->>>>>>> origin/master
