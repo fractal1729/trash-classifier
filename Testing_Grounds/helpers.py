@@ -33,7 +33,6 @@ def cropAndResize(img, coords):
     crop_img = img[coords[1]:coords[1]+coords[2], coords[0]:coords[0]+coords[3]]
     # cv2.imshow(crop_img)
     resizedImg = np.array([])
-    print "Trying to resize Image of size: (", len(crop_img) , ", " len(crop_img[0]), ")"
     resizedImg = cv2.resize(crop_img, (TEST_CASE_SIZE, TEST_CASE_SIZE))
     return resizedImg
 
