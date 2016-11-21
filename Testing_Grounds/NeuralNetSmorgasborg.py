@@ -43,9 +43,9 @@ def crop(img, coords):
 
 def colorDetect(img, thresh):
 
-    height, width, channels = img.shape;
-    sand = [194, 178, 128];
-    new_image = np.zeros((height,width,channels), np.uint8);
+    height, width, channels = img.shape
+    sand = [194, 178, 128]
+    new_image = np.zeros((height,width,channels), np.uint8)
 
     for i in range(height):
         for j in range(width):
@@ -66,7 +66,7 @@ def getCoords(row):
     return coords
 
 def generateNegativeTestCases(coords, width, height, size, count):
-    negCoords = [];
+    negCoords = []
     for i in range(0, count):
         y = random.randint(0,height-1-size)
         x = random.randint(0,width-1-size)
@@ -76,9 +76,9 @@ def generateNegativeTestCases(coords, width, height, size, count):
             if x < coord[1] + coord[3] and x + size > coord[1] and y < coord[0] + coord[2] and y + size  > coord[0]:
                 foundoverlap = True
         if not foundoverlap:
-            negCoords.append([y, x, size, 0]);
+            negCoords.append([y, x, size, 0])
 
-    return negCoords;
+    return negCoords
 
 #coords = An array of 4-element arrays of x, y, h, w
 #TODO: This is horribly inefficient because if something at all even a little bit overlaps with
@@ -92,10 +92,10 @@ def generatePositiveTestCases(coords, width, height, size, count):
 
         for coord in coords:
             if x < coord[1] + coord[3] and x + size > coord[1] and y < coord[0] + coord[2] and y + size  > coord[0]:
-                posCoords.append([y, x, size, 0]);
+                posCoords.append([y, x, size, 0])
                 break
 
-    return posCoords;
+    return posCoords
 
 
 filePrefix = "../allpics/"
