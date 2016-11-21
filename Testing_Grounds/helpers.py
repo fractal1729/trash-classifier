@@ -6,6 +6,89 @@ import numpy as np
 # Q. What is "yield"?
 # A. http://stackoverflow.com/questions/231767/what-does-the-yield-keyword-do
 
+
+def featuresForImage(img):
+    color = cv2.cvtColor(colorDetect(img, COLOR_THRESH), cv2.COLOR_BGR2GRAY)
+    edge = cv2.Canny(img, EDGE_MIN_THRESH, EDGE_MAX_THRESH)
+    grayscale = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+    return [color, edge, grayscale]
+
+def extractFeatures(img, coords):
+    window_features = [[]]*len(coords)
+    feat_imgs = featuresForImage(img)
+
+    for i in range(len(coords)):
+        window_features[i] = np.array([cropAndResize(feat_imgs[0],coords[i]).flatten(), cropAndResize(feat_imgs[1],coords[i]).flatten(), cropAndResize(feat_imgs[2],coords[i]).flatten()]).flatten()
+
+    return window_features
+
+def cropAndResize(img, coords):
+    crop_img = img[coords[0]:coords[0]+coords[2], coords[1]:coords[1]+coords[2]]
+    resizedImg = np.array([])
+    resizedImg = cv2.resize(crop_img, (50,50), resizedImg, 0, 0, cv2.INTER_NEAREST)
+    return resizedImg
+
+def colorDetect(img, thresh):
+
+    height, width, channels = img.shape
+    sand = [194, 178, 128]
+    new_image = np.zeros((height,width,channels), np.uint8)
+
+    for i in range(height):
+        for j in range(width):
+			px = img[i][j]
+			dist_sand = math.sqrt(math.pow((px[0] - sand[0]),2) + math.pow((px[1] - sand[1]),2) + math.pow((px[2] - sand[2]),2))
+			# dist_seaweed = math.sqrt(math.pow((px[0] - seaweed[0]),2) + math.pow((px[1] - seaweed[1]),2) + math.pow((px[2] - seaweed[2]),2))
+			if dist_sand > thresh:
+				new_image[i][j] = [255,255,255]
+
+	return new_image
+
+def getCoords(row):
+    index = 1
+    coords = []
+    while (index < len(row)) and (not math.isnan(row[index])) :
+        coords.append([row[index],row[index+1],row[index+2],row[index+3]])
+        index = index + 4
+    return coords
+
+def generateNegativeTestCases(coords, width, height, minSize, maxSize, count):
+    negCoords = [];
+    for i in range(0, count):
+        size = random.randint(minSize, maxSize)
+        y = random.randint(0,height-1-size)
+        x = random.randint(0,width-1-size)
+        #confirm that this does not overlap of the coordinates
+        foundoverlap = False
+        for coord in coords:
+            if x < coord[1] + coord[3] and x + size > coord[1] and y < coord[0] + coord[2] and y + size  > coord[0]:
+                foundoverlap = True
+        if not foundoverlap:
+            negCoords.append([y, x, size, 0]);
+
+    return negCoords;
+
+#coords = An array of 4-element arrays of x, y, h, w
+def generatePositiveTestCases(coords, w, h, count):
+    finalcoords = [];
+    for coord in coords:
+        top = coord[0]
+        left = coord[1]
+        height = coord[2]
+        width = coord[3]
+        size = max(width, height)
+
+        for x in range(0, count):
+            additionalsize = random.randint(0, int(size))-size/2
+            ntop = top - random.randint(0, additionalsize)
+            nleft = left - random.randint(0, additionalsize)
+
+            if(ntop >=0 and nleft >=0 and ntop+size+additionalsize < h and  nleft+size+additionalsize < w):
+                finalcoords.append([int(ntop),int(nleft), int(size+additionalsize), 1])
+
+    return finalcoords
+
 def pyramid(image, scale=1.5, minSize=(30,30)):
     """
     Create a succesive list of increasing smaller images aka a pyramid
