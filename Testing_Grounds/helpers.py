@@ -72,29 +72,43 @@ def generateNegativeTestCases(coords, width, height, minSize, maxSize, count):
             if x < coord[1] + coord[3] and x + size > coord[1] and y < coord[0] + coord[2] and y + size  > coord[0]:
                 foundoverlap = True
         if not foundoverlap:
-            negCoords.append([y, x, size, 0]);
+            negCoords.append([y, x, size, 0])
 
-    return negCoords;
+    return negCoords
 
-#coords = An array of 4-element arrays of x, y, h, w
-def generatePositiveTestCases(coords, w, h, count):
-    finalcoords = [];
+#coords = An array of 4-element arrays of y, x, h, w
+# def generatePositiveTestCases(coords, w, h, count):
+#     finalcoords = [];
+#     for coord in coords:
+#         top = coord[0]
+#         left = coord[1]
+#         height = coord[2]
+#         width = coord[3]
+#         size = max(width, height)
+
+#         for x in range(0, count):
+#             additionalsize = random.randint(0, int(size))-size/2
+#             ntop = top - random.randint(min(0, additionalsize), max(0, additionalsize))
+#             nleft = left - random.randint(min(0, additionalsize), max(0, additionalsize))
+
+#             if(ntop >=0 and nleft >=0 and ntop+size+additionalsize < h and  nleft+size+additionalsize < w):
+#                 finalcoords.append([int(ntop),int(nleft), int(size+additionalsize), 1])
+
+#     return finalcoords
+
+def generatePositiveTestCases(coords, width, height, minSize, maxSize, count):
+    posCoords = []
     for coord in coords:
-        top = coord[0]
-        left = coord[1]
-        height = coord[2]
-        width = coord[3]
-        size = max(width, height)
+        y0 = coord[0]
+        x0 = coord[1]
+        h = coord[2]
+        w = coord[3]
 
-        for x in range(0, count):
-            additionalsize = random.randint(0, int(size))-size/2
-            ntop = top - random.randint(min(0, additionalsize), max(0, additionalsize))
-            nleft = left - random.randint(min(0, additionalsize), max(0, additionalsize))
-
-            if(ntop >=0 and nleft >=0 and ntop+size+additionalsize < h and  nleft+size+additionalsize < w):
-                finalcoords.append([int(ntop),int(nleft), int(size+additionalsize), 1])
-
-    return finalcoords
+        for k in range(count):
+            size = random.randint(minSize, maxSize)
+            x = random.randint(max(0,x0-size/2), x0-size/2+w)
+            y = random.randint(max(0,y0-size/2), y0-size/2+w)
+            posCoords.append([y,x,size,1])
 
 def pyramid(image, scale=1.5, minSize=(30,30)):
     """
