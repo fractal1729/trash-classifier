@@ -16,6 +16,8 @@ COLOR_THRESH = 150
 EDGE_MIN_THRESH = 100
 EDGE_MAX_THRESH = 200
 TEST_CASE_SIZE = 16
+NUM_PREDICT_CASES = 20
+NUM_TRAINING_IMAGES = 10
 
 def featuresForImage(img):
     color = cv2.cvtColor(colorDetect(img, COLOR_THRESH), cv2.COLOR_BGR2GRAY)
@@ -81,7 +83,7 @@ def generateNegativeTestCases(coords, width, height, size, count):
 #coords = An array of 4-element arrays of x, y, h, w
 #TODO: This is horribly inefficient because if something at all even a little bit overlaps with
 # the defined trash rectangle, it will count it
-def generatePositiveTestCases(coords, w, h, size, count):
+def generatePositiveTestCases(coords, width, height, size, count):
     posCoords = [];
     while len(posCoords) < count:
 
@@ -99,38 +101,40 @@ def generatePositiveTestCases(coords, w, h, size, count):
 filePrefix = "../allpics/"
 
 
-pictureList = [];
+pictureList = []
 
 
 count = 0
 with open('trainingdata.csv', 'rb') as csvfile:
      reader = csv.DictReader(csvfile)
+     print(reader)
      for row in reader:
-         if count < 1:
+         if count < NUM_TRAINING_IMAGES:
             count = count + 1
             img = cv2.imread(filePrefix + row["1"] )
             pictureList.append(img)
-#TODO: Figure out why pictureList only has one image at this point? we want to load all of them
 
 
 #unroll pictures and pop them into
 coordinates = genfromtxt('trainingdata.csv', delimiter=',')
 X = []
 Y = []
+print "Extracting Features from ", len(pictureList), " pictures..."
+startTime = time.time() * 1000
 
 for i in range(0, len(pictureList)):
 
     coords = getCoords(coordinates[i + 1])
-
     img = pictureList[i]
-    if img is None or coords is None:
+    if img is None or coords is None or len(coords) == 0:
+        print ".."
         continue;
     width =  pictureList[i].shape[0]
     height = pictureList[i].shape[1]
 
     # Generate test cases based on the coordinates, the width and height of the picture, and the size and count of the boxes
-    positivetestcases = generatePositiveTestCases(coords, width, height, TEST_CASE_SIZE, 300)
-    negativetestcases = generateNegativeTestCases(coords, width, height, TEST_CASE_SIZE, 1000)
+    positivetestcases = generatePositiveTestCases(coords, width, height, TEST_CASE_SIZE, 50)
+    negativetestcases = generateNegativeTestCases(coords, width, height, TEST_CASE_SIZE, 150)
 
     testcases = positivetestcases+negativetestcases
 
@@ -138,8 +142,9 @@ for i in range(0, len(pictureList)):
 
     #Label ones and zeros
     Y = Y + np.append([1]*len(positivetestcases), [0]*len(negativetestcases)).tolist()
+    print "."
 
-
+print "Extracted Features in ", (time.time() * 1000)-startTime, " milliseconds\n"
 print "Number of Training Data: ", len(X)
 print "Number of Features: ", len(X[0])
 print "Number of Positive Training Data: ", Y.count(1)
@@ -161,9 +166,15 @@ MLPClassifier(activation='relu', alpha=1e-05, batch_size='auto',
            warm_start=False)
 
 print "Time taken to train: ", (time.time() * 1000)-startTime, " milliseconds\n"
-randomCaseNumber = random.randint(0, len(X))
-randomCase = [X[randomCaseNumber]]
-realValue = Y[randomCaseNumber]
-print "Predicting on case#: ", randomCaseNumber
-print "Result: ", clf.predict(randomCase)[0]
-print "Expected Result: ", realValue
+randomCaseNumbers = (np.random.rand(NUM_PREDICT_CASES)*(len(X)-1)).astype(int)
+randomCases = []
+realValues = []
+for caseNum in randomCaseNumbers:
+    randomCases += [X[caseNum]]
+    realValues += [Y[caseNum]]
+predictions = clf.predict(randomCases)
+realValues = realValues
+print "Predicting on ", len(randomCaseNumbers), "cases"
+print "Results: ", predictions
+print "Expected Results: ", realValues
+print "Accuracy: ", (float((np.array(predictions) - np.array(realValues)).tolist().count(0))/float(len(realValues)))*100, "%"
