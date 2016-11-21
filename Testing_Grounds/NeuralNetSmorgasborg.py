@@ -151,11 +151,19 @@ print "Number of Positive Training Data: ", Y.count(1)
 print "Number of Negative Training Data: ", Y.count(0),"\n"
 
 print "Training Neural Network..."
+X = np.array(X)
+Y = np.array(Y)
+numTrainData = 0.8 * len(X)
+Xtrain = X[0:numTrainData]
+Ytrain = Y[0:numTrainData]
+Xtest = X[numTrainData+1:len(X)-1]
+Ytest =Y[numTrainData+1:len(Y)-1]
+
 startTime = time.time() * 1000
 #Run the Neural Net!
 clf = MLPClassifier(solver='lbfgs', alpha=1e-5,
                          hidden_layer_sizes=(5, 2), random_state=1)
-clf.fit(X, Y)
+clf.fit(Xtrain, Ytrain)
 print(".\n.\n.")
 MLPClassifier(activation='relu', alpha=1e-05, batch_size='auto',
            beta_1=0.9, beta_2=0.999, early_stopping=False,
@@ -166,15 +174,8 @@ MLPClassifier(activation='relu', alpha=1e-05, batch_size='auto',
            warm_start=False)
 
 print "Time taken to train: ", (time.time() * 1000)-startTime, " milliseconds\n"
-randomCaseNumbers = (np.random.rand(NUM_PREDICT_CASES)*(len(X)-1)).astype(int)
-randomCases = []
-realValues = []
-for caseNum in randomCaseNumbers:
-    randomCases += [X[caseNum]]
-    realValues += [Y[caseNum]]
-predictions = clf.predict(randomCases)
-realValues = realValues
-print "Predicting on ", len(randomCaseNumbers), "cases"
+predictions = clf.predict(Xtest)
+print "Predicting on ", len(Xtest), "cases"
 print "Results: ", predictions
-print "Expected Results: ", realValues
-print "Accuracy: ", (float((np.array(predictions) - np.array(realValues)).tolist().count(0))/float(len(realValues)))*100, "%"
+print "Expected Results: ", Ytest
+print "Accuracy: ", (float((np.array(predictions) - np.array(Ytest)).tolist().count(0))/float(len(Ytest)))*100, "%"
