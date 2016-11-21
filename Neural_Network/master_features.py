@@ -18,9 +18,10 @@ def feature_images(img):
 
 def feature_list(img, coords):
     window_features = [[]]*len(coords)
+    feat_imgs = feature_images(img)
 
     for i in range(len(coords)):
-        window_features[i] = feature_images(img[coords[i][0]:coords[i][0]+coords[i][2], coords[i][1]:coords[i][1]+coords[i][2]])
+        window_features[i] = [crop(feat_imgs[0],coords[i]), crop(feat_imgs[1],coords[i]), crop(feat_imgs[2],coords[i])]
 
     return window_features
 
@@ -31,9 +32,9 @@ def features(img):
 
     return np.append(color, edge, grayscale)
 
-# def crop(img, coords):
-    # crop_img = img[coords[0]:coords[0]+coords[2], coords[1]:coords[1]+coords[2]]
-    # return crop_img
+def crop(img, coords):
+    crop_img = img[coords[0]:coords[0]+coords[2], coords[1]:coords[1]+coords[2]]
+    return crop_img
 
 def colorDetect(img, thresh):
 	height, width, channels = img.shape
