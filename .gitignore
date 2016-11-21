@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 *.pyc
 *.pyc
 allpics/IMG_0517.jpg
@@ -1063,3 +1064,6 @@ allpics/IMG_1708.jpg
 allpics/IMG_1709.jpg
 allpics/IMG_1718.jpg
 allpics/IMG_1724.jpg
+=======
+*.pyc
+>>>>>>> 8d35678ca7fb1597b217c0de6cd1b15204dae192
