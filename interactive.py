@@ -11,7 +11,7 @@ RESIZE_FACTOR = 0.5
 MAX_WINDOW_SIZE = 200
 MIN_WINDOW_SIZE = 20
 
-imgnum = 15 # keeps track of which image we're on; 15 is set as default
+imgnum = 1 # keeps track of which image we're on; 15 is set as default
 img = compressJPG(cv2.imread(FOLDER_NAME+str(imgnum)+'.jpg'), RESIZE_FACTOR)
 imgH,imgW,channels = img.shape
 
