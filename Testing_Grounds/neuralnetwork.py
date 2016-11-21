@@ -1,4 +1,5 @@
 from sklearn.neural_network import MLPClassifier
+import cv2
 
 
 #Read all of the images in as training data
@@ -20,5 +21,3 @@ MLPClassifier(activation='relu', alpha=1e-05, batch_size='auto',
        warm_start=False)
 
 print clf.predict([[2., 2.], [-1., -2.]])
-
-def getFeatureArray(arrayofimages, top, left, size):
