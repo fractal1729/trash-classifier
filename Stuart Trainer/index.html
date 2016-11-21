@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Image Classifier</title>
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+        <style>
+            .resizable {
+                width: 150px;
+                height: 150px;
+                padding: 0.5em;
+                z-index: 2;
+                background-color: rgba(0, 0, 0, 0);
+                position: absolute;
+                border: 10px solid red;
+            }
+
+            #resizable h3 {
+                text-align: center;
+                margin: 0;
+            }
+        </style>
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script>
+          var lastobject;
+            $(function() {
+
+                $("body").keypress(function(event) {
+
+                    if (event.which == 99) {
+                        $("#selectionContainers").html("");
+                    }
+                    if (event.which == 13) {
+                        console.log("enter");
+                        nextPicture();
+                    }
+                    console.log(event.which);
+                    if (event.which == 100 && lastobject) {//d
+                        lastobject.width(lastobject.width() + 13);
+                    }
+                    if (event.which == 97 && lastobject) {//d
+                        lastobject.width(lastobject.width() - 13);
+                    }
+                    if (event.which == 115 && lastobject) {//d
+                        lastobject.height(lastobject.height() + 13);
+                    }
+                    if (event.which == 119 && lastobject) {//d
+                        lastobject.height(lastobject.height() - 13);
+                    }
+                });
+
+                $(".resizable").resizable().draggable();
+                $("img").click(function(e) {
+
+                    var html = $.parseHTML('<div class="resizable" style = "left:' + e.pageX + 'px; top:' + e.pageY + 'px" class="ui-widget-content"></div>');
+                    $("#selectionContainers").append(html);
+                    lastobject = $(html);
+                    $(".resizable").resizable().draggable();
+                })
+
+            });
+
+
+
+            function showPicture() {
+                var index = parseInt($("#index").val());
+                var lines = $("#imagenames").val().split('\n');
+                var fullpath = $("#prefix").val() + lines[index];
+
+                $("#theimage").attr("src", fullpath);
+                $("#theimage").data("name", lines[index]);
+            }
+
+            function nextPicture() {
+                //first, log the location of all of the boxes
+                var string = $("#theimage").data("name") + "\t";
+                $(".resizable").each(function(index) {
+                    string +=   $(this).position().top + "\t" + $(this).position().left + "\t" + $(this).height() + "\t" + $(this).width() + "\t"
+                });
+                $("#output").val($("#output").val() + string+ "\n") ;
+
+
+                //increase the number
+                var index = parseInt($("#index").val()) + 1;
+                $("#index").val(index);
+
+                showPicture();
+            }
+        </script>
+    </head>
+
+    <body style="margin: 0px;">
+      <div style = "width: 100%" class = "interestingstuff">
+        <div id="selectionContainers">
+            <div class="resizable" class="ui-widget-content">
+            </div>
+        </div>
+        <img id="theimage" style="z-index: 1" data-name = "Franku" src="http://i.qkme.me/3ofxwf.jpg">
+      </div>
+
+        <br>
+        <h1> file path prefix</h1>
+        <br>
+        <textarea id="prefix">pics/</textarea>
+
+
+        <h1> Input list of image names (new line separated) <b> AFTER ADDING NEW PICTURE, Press this button <button onclick = "showPicture()"> Update pictures </button></h1>
+        <br>
+        <textarea id="imagenames">
+IMG_0517.jpg
+IMG_0759.jpg
+IMG_1002.jpg
+IMG_1244.jpg
+IMG_1486.jpg
+IMG_0518.jpg
+        </textarea>
+
+        <h1> Current Index</h1>
+        <button onclick="showPicture()"> Skip to index </button> Warning, will mess up order of output
+        <br>
+        <textarea id="index"> 0 </textarea>
+
+        <h1> Output (to be copied into excel)</h1>
+        <br>
+        <textarea id="output"></textarea>
+
+        <BR><br>
+        <div style = "font-size: 100px">
+        <h1> Directions </h1>
+        <p> Firstly, the picture and screen may be big, so zoom out in your browser (often command -) </p>
+        <p> Then go to the shared google spreadsheet, and check out the names of the images you are about to classify by bolding them, and copying them into the input</p>
+        <p> Then go through and box the images by clicking to create a box, dragging the box to move it, and draggin the bottom right corner or using WASD to adjust size. Press "C" to clear all boxes </p>
+        <p> Press enter to log your classification and move on </p>
+        <p> When you are done, go into the spreadsheet, and paste back in your changes. Do not unbold, to differentiate whether pictures with no trash have been classified</p>
+      </div>
+
+    </body>
+
+</html>

@@ -28,13 +28,14 @@ def extractFeatures(img, coords):
         window_features[i] = np.array([cropAndResize(feat_imgs[0],coords[i]).flatten(), cropAndResize(feat_imgs[1],coords[i]).flatten(), cropAndResize(feat_imgs[2],coords[i]).flatten()]).flatten()
 
     return window_features
-
+#Coords: (y, x, size, 1/0)
 def cropAndResize(img, coords):
-    print("Coords x: ", coords[0], " Coords w: ", coords[3])
-    crop_img = img[coords[1]:coords[1]+coords[2], coords[0]:coords[0]+coords[3]]
+    # print("Coords: ", coords)
+    # print("Image Size: ", len(img), ", ", len(img[0]))
+    crop_img = img[coords[0]:coords[0]+coords[2], coords[1]:coords[1]+coords[2]]
     # cv2.imshow(crop_img)
     resizedImg = np.array([])
-    print "Trying to resize Image of size: (", len(crop_img) , ", ", len(crop_img[0]), ")"
+    # print "Trying to resize Image of size (h, w): (", len(crop_img) , ", ", len(crop_img[0]), ")"
     resizedImg = cv2.resize(crop_img, (TEST_CASE_SIZE, TEST_CASE_SIZE))
     return resizedImg
 
@@ -74,7 +75,7 @@ def generateNegativeTestCases(coords, width, height, minSize, maxSize, count):
             if x < coord[1] + coord[3] and x + size > coord[1] and y < coord[0] + coord[2] and y + size  > coord[0]:
                 foundoverlap = True
         if not foundoverlap:
-            negCoords.append([y, x, size, 0])
+            negCoords.append([x, y, size, 0])
 
     return negCoords
 
@@ -118,8 +119,8 @@ def generatePositiveTestCases(coords, width, height, minSize, maxSize, count):
 
         for k in range(count):
             size = random.randint(minSize, maxSize)
-            x = random.randint(max(0,x0-size/2), x0-size/2+w)
-            y = random.randint(max(0,y0-size/2), y0-size/2+w)
+            x = random.randint(0, w)+max(0,x0-size/2)
+            y = random.randint(0, h)+max(0,y0-size/2)
             posCoords.append([y,x,size,1])
     return posCoords
 

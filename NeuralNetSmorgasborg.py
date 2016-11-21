@@ -18,17 +18,18 @@ NUM_TRAINING_IMAGES = 20
 RESIZE_FACTOR = 0.5
 
 def featuresForImage(img):
-    color = cv2.cvtColor(colorDetect(img, COLOR_THRESH), cv2.COLOR_BGR2GRAY)
-    edge = cv2.Canny(img, EDGE_MIN_THRESH, EDGE_MAX_THRESH)
+    # color = cv2.cvtColor(colorDetect(img, COLOR_THRESH), cv2.COLOR_BGR2GRAY)
+    # edge = cv2.Canny(img, EDGE_MIN_THRESH, EDGE_MAX_THRESH)
     #edge = cv2.cvtColor(cv2.Canny(img,EDGE_MIN_THRESH,EDGE_MAX_THRESH), cv2.COLOR_BGR2GRAY)
-    grayscale = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    # grayscale = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
 
-    return [color, edge, grayscale]
+    #return [color, edge, grayscale]
+    return []
 
 def extractFeatures(img, coords):
     window_features = [[]]*len(coords)
-    feat_imgs = featuresForImage(img)
+    # feat_imgs = featuresForImage(img)
 
     for i in range(len(coords)):
         window_features[i] = np.array([crop(feat_imgs[0],coords[i]).flatten(), crop(feat_imgs[1],coords[i]).flatten(), crop(feat_imgs[2],coords[i]).flatten()]).flatten()
