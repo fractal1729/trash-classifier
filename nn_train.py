@@ -10,7 +10,7 @@ from Testing_Grounds.helpers import compressJPG, generatePositiveTestCases, gene
 from sklearn.neural_network import MLPClassifier
 
 
-NUM_TRAINING_IMAGES = 10
+NUM_TRAINING_IMAGES = 20
 
 filePrefix = "allpics/"
 pictureList = []
@@ -47,12 +47,11 @@ for i in range(0, len(pictureList)):
     height = pictureList[i].shape[1]
 
     # Generate test cases based on the coordinates, the width and height of the picture, and the size and count of the boxes
-    positivetestcases = generatePositiveTestCases(coords, width, height, 30)
+    positivetestcases = generatePositiveTestCases(coords, width, height, 50, 200, 30)
     negativetestcases = generateNegativeTestCases(coords,width, height, 50, 200, 100)
 
     testcases = positivetestcases+negativetestcases
 
-    #TODO Resize
     X = X + extractFeatures(img, testcases)
 
     #Label ones and zeros

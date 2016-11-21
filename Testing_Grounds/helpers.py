@@ -30,10 +30,11 @@ def extractFeatures(img, coords):
     return window_features
 
 def cropAndResize(img, coords):
+    print("Coords x: ", coords[0], " Coords w: ", coords[3])
     crop_img = img[coords[1]:coords[1]+coords[2], coords[0]:coords[0]+coords[3]]
     # cv2.imshow(crop_img)
     resizedImg = np.array([])
-    print "Trying to resize Image of size: (", len(crop_img) , ", " len(crop_img[0]), ")"
+    print "Trying to resize Image of size: (", len(crop_img) , ", ", len(crop_img[0]), ")"
     resizedImg = cv2.resize(crop_img, (TEST_CASE_SIZE, TEST_CASE_SIZE))
     return resizedImg
 
@@ -78,16 +79,16 @@ def generateNegativeTestCases(coords, width, height, minSize, maxSize, count):
     return negCoords
 
 #coords = An array of 4-element arrays of y, x, h, w
-<<<<<<< HEAD
-def generatePositiveTestCases(coords, w, h, count):
-    finalcoords = [];
-    for coord in coords:
-        top = coord[0]
-        left = coord[1]
-        height = coord[2]
-        width = coord[3]
-        size = max(width, height)
-=======
+
+# def generatePositiveTestCases(coords, w, h, count):
+#     finalcoords = [];
+#     for coord in coords:
+#         top = coord[0]
+#         left = coord[1]
+#         height = coord[2]
+#         width = coord[3]
+#         size = max(width, height)
+
 # def generatePositiveTestCases(coords, w, h, count):
 #     finalcoords = [];
 #     for coord in coords:
@@ -101,7 +102,6 @@ def generatePositiveTestCases(coords, w, h, count):
 #             additionalsize = random.randint(0, int(size))-size/2
 #             ntop = top - random.randint(min(0, additionalsize), max(0, additionalsize))
 #             nleft = left - random.randint(min(0, additionalsize), max(0, additionalsize))
->>>>>>> c26fadcd501dc9aacb83061b4b138974ba207839
 
 #             if(ntop >=0 and nleft >=0 and ntop+size+additionalsize < h and  nleft+size+additionalsize < w):
 #                 finalcoords.append([int(ntop),int(nleft), int(size+additionalsize), 1])
@@ -121,6 +121,7 @@ def generatePositiveTestCases(coords, width, height, minSize, maxSize, count):
             x = random.randint(max(0,x0-size/2), x0-size/2+w)
             y = random.randint(max(0,y0-size/2), y0-size/2+w)
             posCoords.append([y,x,size,1])
+    return posCoords
 
 def pyramid(image, scale=1.5, minSize=(30,30)):
     """
