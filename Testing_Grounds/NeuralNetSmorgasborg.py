@@ -3,6 +3,7 @@ from helpers import sliding_window
 from featuregrabber import convertToFeatures
 import math
 import csv
+import time
 import cv2
 import numpy as np
 from numpy import genfromtxt
@@ -78,6 +79,8 @@ def generateNegativeTestCases(coords, width, height, size, count):
     return negCoords;
 
 #coords = An array of 4-element arrays of x, y, h, w
+#TODO: This is horribly inefficient because if something at all even a little bit overlaps with
+# the defined trash rectangle, it will count it
 def generatePositiveTestCases(coords, w, h, size, count):
     posCoords = [];
     while len(posCoords) < count:
@@ -105,7 +108,6 @@ with open('trainingdata.csv', 'rb') as csvfile:
      for row in reader:
          if count < 1:
             count = count + 1
-            print filePrefix + row["1"]
             img = cv2.imread(filePrefix + row["1"] )
             pictureList.append(img)
 #TODO: Figure out why pictureList only has one image at this point? we want to load all of them
@@ -132,19 +134,24 @@ for i in range(0, len(pictureList)):
 
     testcases = positivetestcases+negativetestcases
 
-    #TODO: Currently this doesn't work on multiple pictures. it needs to append it to the existing array of X's
-    #Extract features
-    X = extractFeatures(img, testcases)
+    X = X + extractFeatures(img, testcases)
 
     #Label ones and zeros
-    Y = np.append([1]*len(positivetestcases), [0]*len(negativetestcases))
+    Y = Y + np.append([1]*len(positivetestcases), [0]*len(negativetestcases)).tolist()
 
 
+print "Number of Training Data: ", len(X)
+print "Number of Features: ", len(X[0])
+print "Number of Positive Training Data: ", Y.count(1)
+print "Number of Negative Training Data: ", Y.count(0),"\n"
+
+print "Training Neural Network..."
+startTime = time.time() * 1000
 #Run the Neural Net!
 clf = MLPClassifier(solver='lbfgs', alpha=1e-5,
                          hidden_layer_sizes=(5, 2), random_state=1)
 clf.fit(X, Y)
-
+print(".\n.\n.")
 MLPClassifier(activation='relu', alpha=1e-05, batch_size='auto',
            beta_1=0.9, beta_2=0.999, early_stopping=False,
            epsilon=1e-08, hidden_layer_sizes=(5, 2), learning_rate='constant',
@@ -153,4 +160,10 @@ MLPClassifier(activation='relu', alpha=1e-05, batch_size='auto',
            solver='lbfgs', tol=0.0001, validation_fraction=0.1, verbose=False,
            warm_start=False)
 
-print clf.predict([X[random.randint(0, len(X))]])
+print "Time taken to train: ", (time.time() * 1000)-startTime, " milliseconds\n"
+randomCaseNumber = random.randint(0, len(X))
+randomCase = [X[randomCaseNumber]]
+realValue = Y[randomCaseNumber]
+print "Predicting on case#: ", randomCaseNumber
+print "Result: ", clf.predict(randomCase)[0]
+print "Expected Result: ", realValue
