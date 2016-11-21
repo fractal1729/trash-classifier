@@ -4,11 +4,13 @@ import time
 import cv2
 import numpy as np
 from numpy import genfromtxt
-import random
+
 import operator
-from Testing_Grounds.helpers import compressJPG
+from Testing_Grounds.helpers import compressJPG, generatePositiveTestCases, generateNegativeTestCases, getCoords, extractFeatures
 from sklearn.neural_network import MLPClassifier
 
+
+NUM_TRAINING_IMAGES = 20
 
 filePrefix = "allpics/"
 pictureList = []
@@ -17,8 +19,8 @@ pictureList = []
 count = 0
 with open('trainingdata.csv', 'rb') as csvfile:
      reader = csv.DictReader(csvfile)
-     print(reader)
      for row in reader:
+         print("Reading Row...")
          if count < NUM_TRAINING_IMAGES:
             count = count + 1
             img = cv2.imread(filePrefix + row["1"] )
@@ -36,17 +38,17 @@ for i in range(0, len(pictureList)):
 
     coords = getCoords(coordinates[i + 1])
     img = pictureList[i]
-    if img is None or coords is None or len(coords) == 0:
+    if img is None or len(img) == 0 or len(img[0]) == 0 or coords is None or len(coords) == 0:
         print ".."
         continue;
     # img = compressJPG(img, RESIZE_FACTOR)
-    print "Compressed Image Size: (", len(img[0]), ", ", len(img), ")"
+    # print "Compressed Image Size: (", len(img[0]), ", ", len(img), ")"
     width =  pictureList[i].shape[0]
     height = pictureList[i].shape[1]
 
     # Generate test cases based on the coordinates, the width and height of the picture, and the size and count of the boxes
-    positivetestcases = generatePositiveTestCases(coords, width, height, TEST_CASE_SIZE, 100)
-    negativetestcases = generateNegativeTestCases(coords, width, height, TEST_CASE_SIZE, 150)
+    positivetestcases = generatePositiveTestCases(coords, width, height, 30)
+    negativetestcases = generateNegativeTestCases(coords,width, height, 50, 200, 100)
 
     testcases = positivetestcases+negativetestcases
 
@@ -67,6 +69,7 @@ print "Number of Negative Training Data: ", Y.count(0),"\n"
 print "Training Neural Network..."
 X = np.array(X)
 Y = np.array(Y)
+print(X[0:10])
 numTrainData = 0.8 * len(X)
 Xtrain = X[0:numTrainData]
 Ytrain = Y[0:numTrainData]

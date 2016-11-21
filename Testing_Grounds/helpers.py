@@ -1,11 +1,18 @@
 import imutils
 import cv2
 import numpy as np
+import math
+import random
 
 # FAQ
 # Q. What is "yield"?
 # A. http://stackoverflow.com/questions/231767/what-does-the-yield-keyword-do
 
+
+COLOR_THRESH = 150
+EDGE_MIN_THRESH = 100
+EDGE_MAX_THRESH = 200
+TEST_CASE_SIZE = 50
 
 def featuresForImage(img):
     color = cv2.cvtColor(colorDetect(img, COLOR_THRESH), cv2.COLOR_BGR2GRAY)
@@ -26,7 +33,7 @@ def extractFeatures(img, coords):
 def cropAndResize(img, coords):
     crop_img = img[coords[0]:coords[0]+coords[2], coords[1]:coords[1]+coords[2]]
     resizedImg = np.array([])
-    resizedImg = cv2.resize(crop_img, (50,50), resizedImg, 0, 0, cv2.INTER_NEAREST)
+    resizedImg = cv2.resize(crop_img, (TEST_CASE_SIZE, TEST_CASE_SIZE), resizedImg, 0, 0, cv2.INTER_NEAREST)
     return resizedImg
 
 def colorDetect(img, thresh):
@@ -81,8 +88,8 @@ def generatePositiveTestCases(coords, w, h, count):
 
         for x in range(0, count):
             additionalsize = random.randint(0, int(size))-size/2
-            ntop = top - random.randint(0, additionalsize)
-            nleft = left - random.randint(0, additionalsize)
+            ntop = top - random.randint(min(0, additionalsize), max(0, additionalsize))
+            nleft = left - random.randint(min(0, additionalsize), max(0, additionalsize))
 
             if(ntop >=0 and nleft >=0 and ntop+size+additionalsize < h and  nleft+size+additionalsize < w):
                 finalcoords.append([int(ntop),int(nleft), int(size+additionalsize), 1])
