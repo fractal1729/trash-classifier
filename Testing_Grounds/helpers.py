@@ -18,7 +18,6 @@ def featuresForImage(img):
     color = cv2.cvtColor(colorDetect(img, COLOR_THRESH), cv2.COLOR_BGR2GRAY)
     edge = cv2.Canny(img, EDGE_MIN_THRESH, EDGE_MAX_THRESH)
     grayscale = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-
     return [color, edge, grayscale]
 
 def extractFeatures(img, coords):
@@ -31,9 +30,11 @@ def extractFeatures(img, coords):
     return window_features
 
 def cropAndResize(img, coords):
-    crop_img = img[coords[0]:coords[0]+coords[2], coords[1]:coords[1]+coords[2]]
+    crop_img = img[coords[1]:coords[1]+coords[2], coords[0]:coords[0]+coords[3]]
+    # cv2.imshow(crop_img)
     resizedImg = np.array([])
-    resizedImg = cv2.resize(crop_img, (TEST_CASE_SIZE, TEST_CASE_SIZE), resizedImg, 0, 0, cv2.INTER_NEAREST)
+    print "Trying to resize Image of size: (", len(crop_img) , ", " len(crop_img[0]), ")"
+    resizedImg = cv2.resize(crop_img, (TEST_CASE_SIZE, TEST_CASE_SIZE))
     return resizedImg
 
 def colorDetect(img, thresh):
@@ -76,7 +77,7 @@ def generateNegativeTestCases(coords, width, height, minSize, maxSize, count):
 
     return negCoords;
 
-#coords = An array of 4-element arrays of x, y, h, w
+#coords = An array of 4-element arrays of y, x, h, w
 def generatePositiveTestCases(coords, w, h, count):
     finalcoords = [];
     for coord in coords:

@@ -14,7 +14,7 @@ COLOR_THRESH = 150
 EDGE_MIN_THRESH = 100
 EDGE_MAX_THRESH = 200
 TEST_CASE_SIZE = 50
-NUM_TRAINING_IMAGES = 300
+NUM_TRAINING_IMAGES = 20
 RESIZE_FACTOR = 0.5
 
 def featuresForImage(img):
@@ -36,7 +36,7 @@ def extractFeatures(img, coords):
     return window_features
 
 def crop(img, coords):
-    crop_img = img[coords[0]:coords[0]+coords[2], coords[1]:coords[1]+coords[2]]
+    crop_img = img[coords[1]:coords[1]+coords[2], coords[0]:coords[0]+coords[2]]
     return crop_img
 
 def colorDetect(img, thresh):

@@ -10,7 +10,7 @@ from Testing_Grounds.helpers import compressJPG, generatePositiveTestCases, gene
 from sklearn.neural_network import MLPClassifier
 
 
-NUM_TRAINING_IMAGES = 20
+NUM_TRAINING_IMAGES = 10
 
 filePrefix = "allpics/"
 pictureList = []
