@@ -14,7 +14,7 @@ COLOR_THRESH = 150
 EDGE_MIN_THRESH = 100
 EDGE_MAX_THRESH = 200
 TEST_CASE_SIZE = 50
-NUM_TRAINING_IMAGES = 10
+NUM_TRAINING_IMAGES = 300
 RESIZE_FACTOR = 0.5
 
 def featuresForImage(img):
@@ -185,7 +185,7 @@ clf = MLPClassifier(solver='lbfgs', alpha=1e-5,
 clf.fit(Xtrain, Ytrain)
 print(".\n.\n.")
 MLPClassifier(activation='relu', alpha=1e-05, batch_size='auto',
-           beta_1=0.9, beta_2=0.999, early_stopping=False,
+           beta_1=0.9, beta_2=0.999, early_stopping =False,
            epsilon=1e-08, hidden_layer_sizes=(5, 2), learning_rate='constant',
            learning_rate_init=0.001, max_iter=200, momentum=0.9,
            nesterovs_momentum=True, power_t=0.5, random_state=1, shuffle=True,
